@@ -55,7 +55,7 @@ class Graph(object):
 
     def del_self_loop(self, vertex):
         """Delete any edges that link to the originating vertex"""
-        del_edge(vertex, vertex)
+        self.del_edge(vertex, vertex)
 
     def collapse_multiedges(self, vertex):
         """Eliminate redundant edges originating from vertex. If graph
@@ -83,5 +83,5 @@ class Graph(object):
     def collapse_multigraph(self):
         """Remove all self loops and redundant edges"""
         for v in self.graph:
-            del_self_loop(v)
-            collapse_multiedges(v)
+            self.del_self_loop(v)
+            self.collapse_multiedges(v)
