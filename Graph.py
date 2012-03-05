@@ -3,8 +3,11 @@
 from collections import defaultdict
 
 class Vertex(object):
-    def __init__(self):
-        pass
+    def __init__(self, value=None):
+        self.value = value
+        self.color = "white"
+        self.distance = float("inf")
+        self.predecesor = None
 
 class Graph(object):
     def __init__(self, graph={}, directed=False):
@@ -85,3 +88,5 @@ class Graph(object):
         for v in self.graph:
             self.del_self_loop(v)
             self.collapse_multiedges(v)
+
+    
