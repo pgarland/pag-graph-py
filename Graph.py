@@ -100,12 +100,19 @@ class Graph(object):
         start.distance = 0
         start.parent = None
 
-    def breadth_first_search(self, start, soughtVal):
+    def _reset_search_vertices(self):
+        for v in self.graph:
+            v.color = "white"
+            v.distance = float('inf')
+            v.parent = None
+
+    def breadth_first_search(self, root, soughtVal):
         """Search a graph breadth first, returning the path from the
         start vertex to the vertex containing soughtVal, or None"""
-        _search_root_init(self, start)
+        self._reset_search_vertices()
+        self._search_root_init(root)
         queue = deque()
-        queue.append(start)
+        queue.append(root)
         while len(queue) != 0:
             vertex = queue.popleft()
             for v in self.graph[vertex]:
