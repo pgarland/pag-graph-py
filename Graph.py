@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from collections import defaultdict
+from collections import deque
 
 class Vertex(object):
     def __init__(self, value=None):
@@ -14,6 +15,9 @@ class Graph(object):
         self.directed = directed
         self.graph = graph
 
+        # FIXME representation needs to be changed to prevent
+        # inconsistencies caused by mutating the state of vertices in
+        # a multigraph.
     def out_degree(self, vertex):
         """"Calculate the number of edges originating at vertex"""
         return len(self.graph[vertex])
@@ -90,3 +94,39 @@ class Graph(object):
             self.collapse_multiedges(v)
 
     
+    def _search_root_init(self, start):
+        """Initialize the root of a search tree"""
+        start.color = 'gray'
+        start.distance = 0
+        start.parent = None
+
+    def breadth_first_search(self, start, soughtVal):
+        """Search a graph breadth first, returning the path from the
+        start vertex to the vertex containing soughtVal, or None"""
+        _search_root_init(self, start)
+        queue = deque()
+        queue.append(start)
+        while len(queue) != 0:
+            vertex = queue.popleft()
+            for v in self.graph[vertex]:
+                if v.color == "white":
+                    v.color = "gray"
+                    v.distance = vertex.distance + 1
+                    v.parent = vertex
+                    queue.append(v)
+            vertex.color = "black"
+            if vertex.value == soughtVal:
+                return trackback(self, vertex)
+        # Didn't find what we were looking for
+        return None
+
+    def trackback(self, vertex):
+        """Return the path from vertex to the root of the search tree"""
+        path = deque(v)
+        v = vertex
+        while(v.parent != None):
+            path.appendleft(v.parent)
+            v = v.parent
+            return path        
+
+                
